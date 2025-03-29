@@ -18,5 +18,6 @@ public class User {
         this.login = login;
         this.name = name;
         this.birthday = birthday;
+        this.id = null;
     }
 }
