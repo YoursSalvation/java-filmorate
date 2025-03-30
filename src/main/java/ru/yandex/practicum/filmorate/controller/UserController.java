@@ -39,6 +39,7 @@ public class UserController {
     @PutMapping
     public User updateUser(@RequestBody User user) {
         if (user.getId() == null) throw new ValidationException("Id должен быть указан");
+        if (!users.containsKey(user.getId())) throw new ValidationException("Пользователь с указанным id не найден");
         User actualUser = users.get(user.getId());
         if (user.getEmail().isBlank() || !user.getEmail().contains("@")) user.setEmail(actualUser.getEmail());
         if (user.getLogin().isBlank() || user.getLogin().contains(" ")) user.setLogin(actualUser.getLogin());
