@@ -32,6 +32,7 @@ public class FilmController {
                 " 200 символов");
         if (film.getReleaseDate().isBefore(MINIMAL_DATE)) throw new ValidationException("Дата релиза - не раньше" +
                 " 28 декабря 1895 года");
+        if (film.getDuration().isNegative()) throw new ValidationException("Длительность не может быть отрицательной");
         film.setId(getNextId());
         films.put(film.getId(), film);
         return film;
