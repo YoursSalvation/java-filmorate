@@ -56,6 +56,6 @@ public class FilmController {
         return films.keySet().stream()
                 .mapToLong(id -> id)
                 .max()
-                .orElse(0);
+                .orElse(1);
     }
 }

@@ -53,6 +53,6 @@ public class UserController {
         return users.keySet().stream()
                 .mapToLong(id -> id)
                 .max()
-                .orElse(0);
+                .orElse(1);
     }
 }
