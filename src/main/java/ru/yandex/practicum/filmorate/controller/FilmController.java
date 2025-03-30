@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -16,8 +17,8 @@ import java.util.Map;
 @Slf4j
 public class FilmController {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
-    private static final LocalDateTime MINIMAL_DATE = LocalDateTime.parse("28.12.1895, 00:00", formatter);
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final LocalDate MINIMAL_DATE = LocalDate.parse("1895-12-28", formatter);
     private final Map<Long, Film> films = new HashMap<>();
 
     @GetMapping

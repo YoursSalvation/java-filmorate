@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class UserController {
                 " электронный почты не может быть пустым и должен содержать символ '@'");
         if (user.getLogin().isBlank() || user.getLogin().contains(" ")) throw new ValidationException("Логин не может" +
                 " быть пустым и содержать пробелы");
-        if (user.getBirthday().isAfter(LocalDateTime.now()))
+        if (user.getBirthday().isAfter(LocalDate.now()))
             throw new ValidationException("Дата рождения не может быть в будущем");
         if (user.getName().isBlank()) user.setName(user.getLogin());
         user.setId(getNextId());
@@ -42,7 +42,7 @@ public class UserController {
         User actualUser = users.get(user.getId());
         if (user.getEmail().isBlank() || !user.getEmail().contains("@")) user.setEmail(actualUser.getEmail());
         if (user.getLogin().isBlank() || user.getLogin().contains(" ")) user.setLogin(actualUser.getLogin());
-        if (user.getBirthday().isAfter(LocalDateTime.now())) user.setBirthday(actualUser.getBirthday());
+        if (user.getBirthday().isAfter(LocalDate.now())) user.setBirthday(actualUser.getBirthday());
         if (user.getName().isBlank()) user.setName(user.getLogin());
         users.put(user.getId(), user);
         return user;
