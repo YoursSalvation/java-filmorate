@@ -41,6 +41,7 @@ public class FilmController {
     @PutMapping
     public Film updateFilm(@RequestBody Film film) {
         if (film.getId() == null) throw new ValidationException("Id должен быть указан");
+        if (!films.containsKey(film.getId())) throw new ValidationException("Фильм с указанным id не найден");
         Film actualFilm = films.get(film.getId());
         if (film.getName() == null) film.setName(actualFilm.getName());
         if (film.getDescription() == null) film.setDescription(actualFilm.getDescription());
