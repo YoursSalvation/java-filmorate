@@ -27,7 +27,7 @@ public class FilmController {
 
     @PostMapping
     public Film addFilm(@RequestBody Film film) {
-        if (film.getName().isBlank()) throw new ValidationException("Название не может быть пустым");
+        if (film.getName() == null || film.getName().isBlank()) throw new ValidationException("Название не может быть пустым");
         if (film.getDescription().length() > 200) throw new ValidationException("Макисмальная длина описания" +
                 " 200 символов");
         if (film.getReleaseDate().isBefore(MINIMAL_DATE)) throw new ValidationException("Дата релиза - не раньше" +
