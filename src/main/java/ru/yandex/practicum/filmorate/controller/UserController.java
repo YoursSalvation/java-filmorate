@@ -30,7 +30,7 @@ public class UserController {
                 " быть пустым и содержать пробелы");
         if (user.getBirthday().isAfter(LocalDate.now()))
             throw new ValidationException("Дата рождения не может быть в будущем");
-        if (user.getName().isBlank()) user.setName(user.getLogin());
+        if (user.getName() == null || user.getName().isBlank()) user.setName(user.getLogin());
         user.setId(getNextId());
         users.put(user.getId(), user);
         return user;
