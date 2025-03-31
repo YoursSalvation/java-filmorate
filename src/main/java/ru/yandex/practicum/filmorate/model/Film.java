@@ -1,8 +1,8 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.serializer.DurationSerializer;
 
 import java.time.Duration;
 import java.time.LocalDate;
