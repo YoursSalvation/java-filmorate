@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.model.serializer.DurationSerializer;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * Film.
@@ -18,6 +19,7 @@ public class Film {
     private LocalDate releaseDate;
     @JsonSerialize(using = DurationSerializer.class)
     private Duration duration;
+    Set<Long> likes;
 
     //Конструктор для тестов
     public Film(String name, String description, LocalDate releaseDate, Duration duration) {
@@ -25,5 +27,6 @@ public class Film {
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
+        this.likes = null;
     }
 }
