@@ -21,6 +21,12 @@ public class ExceptionHandler {
         return new ErrorResponse("Объект не найден", e.getMessage());
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalArgument(IllegalArgumentException e) {
+        return new ErrorResponse("Ошибка аргументов", e.getMessage());
+    }
+
     @org.springframework.web.bind.annotation.ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleThrowable(Throwable throwable) {
