@@ -6,10 +6,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class InMemoryUserStorage implements UserStorage {
@@ -88,6 +85,16 @@ public class InMemoryUserStorage implements UserStorage {
         user2.setFriends(friendsUser2);
         users.put(id1, user1);
         users.put(id2, user2);
+    }
+
+    @Override
+    public Set<User> findFriends(Long id) {
+        Set<Long> friendsId = users.get(id).getFriends();
+        Set<User> friends = new HashSet<>();
+        for (Long l : friendsId) {
+            friends.add(users.get(l));
+        }
+        return friends;
     }
 
     private Long getNextId() {

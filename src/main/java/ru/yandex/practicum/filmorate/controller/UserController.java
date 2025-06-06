@@ -31,6 +31,11 @@ public class UserController {
         return userService.findMutualFriends(userId, otherId);
     }
 
+    @GetMapping("/{userId}/friends")
+    public Collection<User> findFriends(@PathVariable Long userId) {
+        return userService.findFriends(userId);
+    }
+
     @DeleteMapping("/{id}")
     public User deleteUserById(@PathVariable Long id) {
         return userService.deleteUserById(id);

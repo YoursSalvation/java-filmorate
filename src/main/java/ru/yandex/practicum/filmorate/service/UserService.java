@@ -44,6 +44,11 @@ public class UserService {
         userStorage.addFriend(id1, id2);
     }
 
+    public Set<User> findFriends(Long id) {
+        if (id == null || id < 1) throw new IllegalArgumentException("Некорректный id");
+        return userStorage.findFriends(id);
+    }
+
     public void removeFriend(Long id1, Long id2) {
         if (id1 == null || id1 < 1) throw new NotFoundException("Некорректный id");
         if (id2 == null || id2 < 1) throw new NotFoundException("Некорректный id");
