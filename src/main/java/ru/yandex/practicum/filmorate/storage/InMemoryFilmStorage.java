@@ -52,7 +52,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film updateFilm(Film film) {
         if (film.getId() == null) throw new ValidationException("Id должен быть указан");
-        if (!films.containsKey(film.getId())) throw new ValidationException("Фильм с указанным id не найден");
+        if (!films.containsKey(film.getId())) throw new NotFoundException("Фильм с указанным id не найден");
         Film actualFilm = films.get(film.getId());
         if (film.getName() == null) film.setName(actualFilm.getName());
         if (film.getDescription() == null) film.setDescription(actualFilm.getDescription());
@@ -66,18 +66,14 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public void addLike(Long filmId, Long userId) {
         Film film = getFilmById(filmId);
-        Set<Long> filmLikes = film.getLikes();
-        filmLikes.add(userId);
-        film.setLikes(filmLikes);
+        film.getLikes().add(userId);
         films.put(filmId, film);
     }
 
     @Override
     public void removeLike(Long filmId, Long userId) {
         Film film = getFilmById(filmId);
-        Set<Long> filmLikes = film.getLikes();
-        filmLikes.remove(userId);
-        film.setLikes(filmLikes);
+        film.getLikes().remove(userId);
         films.put(filmId, film);
     }
 

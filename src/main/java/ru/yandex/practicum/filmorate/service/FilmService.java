@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FilmService {
     private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final LocalDate MINIMAL_DATE = LocalDate.parse("1895-12-28", formatter);
 
@@ -41,12 +43,14 @@ public class FilmService {
     public void addLike(Long filmId, Long userId) {
         if (filmId == null || filmId < 1) throw new NotFoundException("Фильм с таким id не найден");
         if (userId == null || userId < 1) throw new NotFoundException("Пользователь с таким id не найден");
+        userStorage.getUserById(userId);
         filmStorage.addLike(filmId, userId);
     }
 
     public void removeLike(Long filmId, Long userId) {
         if (filmId == null || filmId < 1) throw new NotFoundException("Фильм с таким id не найден");
         if (userId == null || userId < 1) throw new NotFoundException("Пользователь с таким id не найден");
+        userStorage.getUserById(userId);
         filmStorage.removeLike(filmId, userId);
     }
 
