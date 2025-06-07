@@ -63,12 +63,8 @@ public class InMemoryUserStorage implements UserStorage {
     public void addFriend(Long id1, Long id2) {
         User user1 = getUserById(id1);
         User user2 = getUserById(id2);
-        Set<Long> friendsUser1 = user1.getFriends();
-        Set<Long> friendsUser2 = user2.getFriends();
-        friendsUser1.add(id2);
-        friendsUser2.add(id1);
-        user1.setFriends(friendsUser1);
-        user2.setFriends(friendsUser2);
+        user1.getFriends().add(id2);
+        user2.getFriends().add(id1);
         users.put(id1, user1);
         users.put(id2, user2);
     }
