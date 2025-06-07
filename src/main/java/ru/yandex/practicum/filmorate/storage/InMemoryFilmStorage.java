@@ -93,6 +93,6 @@ public class InMemoryFilmStorage implements FilmStorage {
         return films.keySet().stream()
                 .mapToLong(id -> id)
                 .max()
-                .orElse(1);
+                .orElse(1) + 1;
     }
 }

@@ -101,6 +101,6 @@ public class InMemoryUserStorage implements UserStorage {
         return users.keySet().stream()
                 .mapToLong(id -> id)
                 .max()
-                .orElse(1);
+                .orElse(1) + 1;
     }
 }
