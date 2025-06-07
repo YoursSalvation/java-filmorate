@@ -90,9 +90,10 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     private Long getNextId() {
-        return films.keySet().stream()
+        long curMaxId = films.keySet().stream()
                 .mapToLong(id -> id)
                 .max()
-                .orElse(1) + 1;
+                .orElse(0);
+        return ++curMaxId;
     }
 }

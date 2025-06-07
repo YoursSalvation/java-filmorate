@@ -98,9 +98,10 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     private Long getNextId() {
-        return users.keySet().stream()
+        long curMaxId = users.keySet().stream()
                 .mapToLong(id -> id)
                 .max()
-                .orElse(1) + 1;
+                .orElse(0);
+        return ++curMaxId;
     }
 }
