@@ -85,6 +85,9 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public Set<User> findFriends(Long id) {
+        if (!users.containsKey(id)) throw new NotFoundException("Пользователь с указанным id не найден");
+        if (users.get(id).getFriends() == null) throw new NotFoundException("У пользователя с id " + id
+                + " нет друзей");
         Set<Long> friendsId = users.get(id).getFriends();
         Set<User> friends = new HashSet<>();
         for (Long l : friendsId) {
