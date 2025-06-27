@@ -3,6 +3,8 @@ package ru.yandex.practicum.filmorate.controller;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
@@ -12,7 +14,7 @@ class UserControllerTest {
 
     @Test
     public void postUser() {
-        UserController userController = new UserController();
+        UserController userController = new UserController(new UserService(new InMemoryUserStorage()));
 
         assertThrows(ValidationException.class, () -> userController.addUser(new User(" ", "123",
                 "123", LocalDate.now().minusDays(2))));
@@ -28,7 +30,7 @@ class UserControllerTest {
 
     @Test
     public void updateUser() {
-        UserController userController = new UserController();
+        UserController userController = new UserController(new UserService(new InMemoryUserStorage()));
 
         userController.addUser(new User("mail@mail.ru", "login", "name",
                 LocalDate.now().minusDays(1)));
