@@ -70,8 +70,6 @@ public class UserDbStorage implements UserStorage {
             }, keyHolder);
         } catch (DuplicateKeyException e) {
             throw new ValidationException("User duplicate key error");
-        } catch (DataIntegrityViolationException e) {
-            throw new NotFoundException("User referential integrity error");
         }
         user.setId(keyHolder.getKey().longValue());
         return user;
@@ -80,11 +78,10 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User updateUser(User user) {
         try {
-            jdbc.update(UserRowMapper.UPDATE_USER_QUERY, user.getEmail(), user.getLogin(), user.getName(), user.getBirthday(), user.getId());
+            jdbc.update(UserRowMapper.UPDATE_USER_QUERY, user.getEmail(), user.getLogin(), user.getName(),
+                    user.getBirthday(), user.getId());
         } catch (DuplicateKeyException e) {
             throw new ValidationException("User duplicate key error");
-        } catch (DataIntegrityViolationException e) {
-            throw new NotFoundException("User referential integrity error");
         }
         return user;
     }

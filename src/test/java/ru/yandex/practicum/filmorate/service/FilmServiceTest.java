@@ -148,9 +148,9 @@ class FilmServiceTest {
         nextFilm.setDescription("friendly neighbor");
         nextFilm.setDuration(Duration.of(2, ChronoUnit.HOURS));
         nextFilm.setReleaseDate(LocalDate.of(2002, 5, 3));
-        Rating mpa2 = new Rating();
-        mpa2.setId(2L);
-        nextFilm.setRating(mpa2);
+        Rating rating2 = new Rating();
+        rating2.setId(2L);
+        nextFilm.setRating(rating2);
         Genre genre3 = new Genre();
         genre3.setId(3L);
         Genre genre4 = new Genre();

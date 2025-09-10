@@ -38,7 +38,6 @@ public class UserService {
     public UserApiDto deleteUserById(Long id) {
         if (id == null || id < 1) throw new IllegalArgumentException("Invalid User id");
         User user = userStorage.deleteUserById(id);
-        log.debug("Deleted user {}", user);
         return UserMapper.toDto(user);
     }
 
@@ -46,7 +45,6 @@ public class UserService {
         if (dto == null) throw new IllegalArgumentException("User object shouldn't be null");
         User user = UserMapper.toUser(dto);
         User newUser = userStorage.createUser(user);
-        log.debug("Created user {}", newUser);
         return UserMapper.toDto(newUser);
     }
 
@@ -55,7 +53,6 @@ public class UserService {
         if (dto.getId() == null || dto.getId() < 1) throw new IllegalArgumentException("Invalid User id");
         User user = UserMapper.toUser(dto);
         User newUser = userStorage.updateUser(user);
-        log.debug("Updated user {}", newUser);
         return UserMapper.toDto(newUser);
     }
 
@@ -64,7 +61,6 @@ public class UserService {
         if (id2 == null || id2 < 1) throw new NotFoundException("Invalid User id");
         if (Objects.equals(id1, id2)) throw new IllegalArgumentException("User ids are equal");
         userStorage.addFriend(id1, id2);
-        log.debug("User {} added friend {}", id1, id2);
     }
 
     public void removeFriend(Long id1, Long id2) {
@@ -72,7 +68,6 @@ public class UserService {
         if (id2 == null || id2 < 1) throw new NotFoundException("Invalid User id");
         if (Objects.equals(id1, id2)) throw new IllegalArgumentException("User ids are equal");
         userStorage.removeFriend(id1, id2);
-        log.debug("User {} removed user {} from friends", id1, id2);
     }
 
     public Set<UserApiDto> findFriends(Long id) {
