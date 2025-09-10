@@ -63,8 +63,8 @@ public class InMemoryUserStorage implements UserStorage {
     public void addFriend(Long id1, Long id2) {
         User user1 = getUserById(id1);
         User user2 = getUserById(id2);
-        user1.getFriends().add(id2);
-        user2.getFriends().add(id1);
+        user1.getFollowing().add(id2);
+        user2.getFollowers().add(id1);
         users.put(id1, user1);
         users.put(id2, user2);
     }
@@ -73,23 +73,20 @@ public class InMemoryUserStorage implements UserStorage {
     public void removeFriend(Long id1, Long id2) {
         User user1 = getUserById(id1);
         User user2 = getUserById(id2);
-        user1.getFriends().remove(id2);
-        user2.getFriends().remove(id1);
+        user1.getFollowing().remove(id2);
+        user2.getFollowers().remove(id1);
         users.put(id1, user1);
         users.put(id2, user2);
     }
 
     @Override
-    public Set<User> findFriends(Long id) {
-        if (!users.containsKey(id)) throw new NotFoundException("Пользователь с указанным id не найден");
-        if (users.get(id).getFriends() == null) throw new NotFoundException("У пользователя с id " + id
-                + " нет друзей");
-        Set<Long> friendsId = users.get(id).getFriends();
-        Set<User> friends = new HashSet<>();
-        for (Long l : friendsId) {
-            friends.add(users.get(l));
+    public Collection<User> getUsersByIds(Collection<Long> ids) {
+        Set<User> friendUsers = new HashSet<>();
+        for (Long id : ids) {
+            User userById = getUserById(id);
+            friendUsers.add(userById);
         }
-        return friends;
+        return friendUsers;
     }
 
     private Long getNextId() {

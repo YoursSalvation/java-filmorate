@@ -3,10 +3,11 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.FilmApiDto;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/films")
@@ -17,27 +18,27 @@ public class FilmController {
     private final FilmService filmService;
 
     @GetMapping
-    public Collection<Film> getFilms() {
+    public Collection<FilmApiDto> getFilms() {
         return filmService.getFilms();
     }
 
     @GetMapping("/{id}")
-    public Film getFilmById(@PathVariable Long id) {
+    public FilmApiDto getFilmById(@PathVariable Long id) {
         return filmService.getFilmById(id);
     }
 
     @PostMapping
-    public Film addFilm(@RequestBody Film film) {
+    public FilmApiDto addFilm(@RequestBody FilmApiDto film) {
         return filmService.createFilm(film);
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film) {
+    public FilmApiDto updateFilm(@RequestBody FilmApiDto film) {
         return filmService.updateFilm(film);
     }
 
     @DeleteMapping("/{id}")
-    public Film deleteFilmById(@PathVariable Long id) {
+    public FilmApiDto deleteFilmById(@PathVariable Long id) {
         return filmService.deleteFilmById(id);
     }
 
@@ -52,7 +53,9 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public Collection<Film> getPopular(@RequestParam(defaultValue = "10") Integer count) {
-        return filmService.getPopular(count);
+    public List<FilmApiDto> getPopular(@RequestParam(defaultValue = "10") Integer count,
+                                       @RequestParam(required = false) Long genreId,
+                                       @RequestParam(required = false) String year) {
+        return filmService.getPopular(count, genreId, year);
     }
 }
