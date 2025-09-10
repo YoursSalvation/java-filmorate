@@ -81,6 +81,11 @@ public class InMemoryUserStorage implements UserStorage {
         return friendUsers;
     }
 
+    @Override
+    public void checkUserById(Long id) {
+        if (!users.containsKey(id)) throw new NotFoundException("User not found");
+    }
+
     private Long getNextId() {
         long curMaxId = users.keySet().stream()
                 .mapToLong(id -> id)

@@ -103,6 +103,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film updateFilm(Film film) {
+        checkFilmById(film.getId());
         Long updateDuration = (film.getDuration() == null) ? null : film.getDuration().toMillis();
         Long updateRating = (film.getRating() == null) ? null : film.getRating().getId();
         try {
@@ -172,5 +173,14 @@ public class FilmDbStorage implements FilmStorage {
         }
 
         return jdbc.query(FilmRowMapper.GET_POPULAR_FILMS_QUERY + QUERY_GROUP, new FilmRowMapper(), count);
+    }
+
+    @Override
+    public void checkFilmById(Long id) {
+        try {
+            jdbc.queryForObject(FilmRowMapper.GET_SIMPLE_FILM_QUERY, new FilmRowMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("Check failed: Film not found");
+        }
     }
 }

@@ -79,6 +79,12 @@ public class InMemoryFilmStorage implements FilmStorage {
                 .toList();
     }
 
+    @Override
+    public void checkFilmById(Long id) {
+        if (!films.containsKey(id)) throw new NotFoundException("Film not found", id);
+    }
+
+
     private Long getNextId() {
         long curMaxId = films.keySet().stream()
                 .mapToLong(id -> id)

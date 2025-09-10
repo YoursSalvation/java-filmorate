@@ -76,6 +76,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User updateUser(User user) {
+        checkUserById(user.getId());
         try {
             jdbc.update(UserRowMapper.UPDATE_USER_QUERY, user.getEmail(), user.getLogin(), user.getName(),
                     user.getBirthday(), user.getId());
@@ -87,6 +88,8 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public void addFriend(Long id1, Long id2) {
+        checkUserById(id1);
+        checkUserById(id2);
         try {
             jdbc.update(UserRowMapper.ADD_FRIEND_QUERY, id1, id2);
         } catch (DuplicateKeyException e) {
@@ -96,6 +99,8 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public void removeFriend(Long id1, Long id2) {
+        checkUserById(id1);
+        checkUserById(id2);
         jdbc.update(UserRowMapper.REMOVE_FRIEND_QUERY, id1, id2);
     }
 
@@ -105,5 +110,14 @@ public class UserDbStorage implements UserStorage {
         String idsLine = String.join(",", ids.stream().map(id -> "?").toList());
         String query = UserRowMapper.GET_USERS_BY_IDS_QUERY.replace("THE_LINE_OF_MASK", idsLine);
         return jdbc.query(query, new UserRowMapper(), ids.toArray());
+    }
+
+    @Override
+    public void checkUserById(Long id) {
+        try {
+            jdbc.queryForObject(UserRowMapper.GET_SIMPLE_USER_QUERY, new UserRowMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("User not found");
+        }
     }
 }
