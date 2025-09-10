@@ -58,7 +58,9 @@ public class FilmService {
             if (film.getReleaseDate().isBefore(MINIMAL_DATE)) throw new ValidationException("Дата релиза - не раньше" +
                     " 28 декабря 1895 года");
         }
-        if (film.getDuration().isNegative()) throw new ValidationException("Длительность не может быть отрицательной");
+        if (film.getDuration() != null) {
+            if (film.getDuration().isNegative()) throw new ValidationException("Длительность не может быть отрицательной");
+        }
         ratingService.checkFilmRating(film);
         genreService.checkFilmGenres(film);
         Film newFilm = filmStorage.createFilm(film);
