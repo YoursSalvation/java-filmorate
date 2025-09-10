@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 
 @JdbcTest
@@ -14,8 +13,6 @@ import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Import({UserDbStorage.class})
 class FilmorateApplicationTests {
-    private final UserDbStorage userStorage;
-    private final UserService userService;
 
     @Test
     void contextLoads() {
