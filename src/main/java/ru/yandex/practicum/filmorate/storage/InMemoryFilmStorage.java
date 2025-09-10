@@ -40,13 +40,6 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film createFilm(Film film) {
-        if (film.getName() == null || film.getName().isBlank())
-            throw new ValidationException("Название не может быть пустым");
-        if (film.getDescription().length() > 200) throw new ValidationException("Макисмальная длина описания" +
-                " 200 символов");
-        if (film.getReleaseDate().isBefore(MINIMAL_DATE)) throw new ValidationException("Дата релиза - не раньше" +
-                " 28 декабря 1895 года");
-        if (film.getDuration().isNegative()) throw new ValidationException("Длительность не может быть отрицательной");
         film.setId(getNextId());
         films.put(film.getId(), film);
         return film;
@@ -54,7 +47,6 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film updateFilm(Film film) {
-        if (film.getId() == null) throw new ValidationException("Id должен быть указан");
         if (!films.containsKey(film.getId())) throw new NotFoundException("Фильм с указанным id не найден");
         Film actualFilm = films.get(film.getId());
         if (film.getName() == null) film.setName(actualFilm.getName());

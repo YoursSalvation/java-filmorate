@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmApiDto;
 import ru.yandex.practicum.filmorate.model.FilmMapper;
@@ -49,6 +50,13 @@ public class FilmService {
     public FilmApiDto createFilm(FilmApiDto dto) {
         if (dto == null) throw new IllegalArgumentException("Film object shouldn't be null");
         Film film = FilmMapper.toFilm(dto);
+        if (film.getName() == null || film.getName().isBlank())
+            throw new ValidationException("Название не может быть пустым");
+        if (film.getDescription().length() > 200) throw new ValidationException("Макисмальная длина описания" +
+                " 200 символов");
+        if (film.getReleaseDate().isBefore(MINIMAL_DATE)) throw new ValidationException("Дата релиза - не раньше" +
+                " 28 декабря 1895 года");
+        if (film.getDuration().isNegative()) throw new ValidationException("Длительность не может быть отрицательной");
         ratingService.checkFilmRating(film);
         genreService.checkFilmGenres(film);
         Film newFilm = filmStorage.createFilm(film);

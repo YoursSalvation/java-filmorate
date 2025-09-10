@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.model.UserApiDto;
 import ru.yandex.practicum.filmorate.model.UserMapper;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -44,7 +46,12 @@ public class UserService {
     public UserApiDto createUser(UserApiDto dto) {
         if (dto == null) throw new IllegalArgumentException("User object shouldn't be null");
         User user = UserMapper.toUser(dto);
-        if (user.getName().isBlank()) user.setName(user.getLogin());
+        if (user.getEmail().isBlank() || !user.getEmail().contains("@")) throw new ValidationException("Адрес" +
+                " электронный почты не может быть пустым и должен содержать символ '@'");
+        if (user.getLogin().isBlank() || user.getLogin().contains(" ")) throw new ValidationException("Логин не может" +
+                " быть пустым и содержать пробелы");
+        if (user.getBirthday().isAfter(LocalDate.now()))
+            throw new ValidationException("Дата рождения не может быть в будущем");
         User newUser = userStorage.createUser(user);
         return UserMapper.toDto(newUser);
     }
@@ -53,6 +60,7 @@ public class UserService {
         if (dto == null) throw new IllegalArgumentException("User object shouldn't be null");
         if (dto.getId() == null || dto.getId() < 1) throw new IllegalArgumentException("Invalid User id");
         User user = UserMapper.toUser(dto);
+        if (user.getId() == null) throw new ValidationException("Id должен быть указан");
         User newUser = userStorage.updateUser(user);
         return UserMapper.toDto(newUser);
     }

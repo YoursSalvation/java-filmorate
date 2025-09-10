@@ -34,12 +34,6 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User createUser(User user) {
-        if (user.getEmail().isBlank() || !user.getEmail().contains("@")) throw new ValidationException("Адрес" +
-                " электронный почты не может быть пустым и должен содержать символ '@'");
-        if (user.getLogin().isBlank() || user.getLogin().contains(" ")) throw new ValidationException("Логин не может" +
-                " быть пустым и содержать пробелы");
-        if (user.getBirthday().isAfter(LocalDate.now()))
-            throw new ValidationException("Дата рождения не может быть в будущем");
         if (user.getName() == null || user.getName().isBlank()) user.setName(user.getLogin());
         user.setId(getNextId());
         users.put(user.getId(), user);
@@ -48,7 +42,6 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User updateUser(User user) {
-        if (user.getId() == null) throw new ValidationException("Id должен быть указан");
         if (!users.containsKey(user.getId())) throw new NotFoundException("Пользователь с указанным id не найден");
         User actualUser = users.get(user.getId());
         if (user.getEmail().isBlank() || !user.getEmail().contains("@")) user.setEmail(actualUser.getEmail());
