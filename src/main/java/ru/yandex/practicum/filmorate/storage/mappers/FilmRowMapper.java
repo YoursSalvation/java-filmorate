@@ -167,7 +167,7 @@ public class FilmRowMapper implements RowMapper<Film> {
             Rating filmRating = new Rating();
             filmRating.setId(dbRating);
             filmRating.setName(rs.getString("rating_name"));
-            film.setRating(filmRating);
+            film.setMpa(filmRating);
         }
 
         film.setLikes(makeLongSet(rs.getArray("likes")));

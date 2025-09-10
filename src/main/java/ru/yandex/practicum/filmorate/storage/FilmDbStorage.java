@@ -75,8 +75,8 @@ public class FilmDbStorage implements FilmStorage {
                     ps.setNull(4, Types.BIGINT);
                 }
 
-                if (film.getRating() != null && film.getRating().getId() != null) {
-                    ps.setLong(5, film.getRating().getId());
+                if (film.getMpa() != null && film.getMpa().getId() != null) {
+                    ps.setLong(5, film.getMpa().getId());
                 } else {
                     ps.setNull(5, Types.BIGINT);
                 }
@@ -105,7 +105,7 @@ public class FilmDbStorage implements FilmStorage {
     public Film updateFilm(Film film) {
         checkFilmById(film.getId());
         Long updateDuration = (film.getDuration() == null) ? null : film.getDuration().toMillis();
-        Long updateRating = (film.getRating() == null) ? null : film.getRating().getId();
+        Long updateRating = (film.getMpa() == null) ? null : film.getMpa().getId();
         try {
             jdbc.update(FilmRowMapper.UPDATE_FILM_QUERY,
                     film.getName(), film.getDescription(), film.getReleaseDate(), updateDuration, updateRating,

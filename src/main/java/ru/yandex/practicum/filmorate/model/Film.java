@@ -22,6 +22,6 @@ public class Film {
     @JsonSerialize(using = DurationSerializer.class)
     private Duration duration;
     private Set<Long> likes = new HashSet<>();
-    private Rating rating;
+    private Rating mpa;
     private Set<Genre> genres = new LinkedHashSet<>();
 }
