@@ -50,8 +50,10 @@ public class UserService {
                 " электронный почты не может быть пустым и должен содержать символ '@'");
         if (user.getLogin().isBlank() || user.getLogin().contains(" ")) throw new ValidationException("Логин не может" +
                 " быть пустым и содержать пробелы");
-        if (user.getBirthday().isAfter(LocalDate.now()))
-            throw new ValidationException("Дата рождения не может быть в будущем");
+        if (user.getBirthday() == null) {
+            if (user.getBirthday().isAfter(LocalDate.now()))
+                throw new ValidationException("Дата рождения не может быть в будущем");
+        }
         User newUser = userStorage.createUser(user);
         return UserMapper.toDto(newUser);
     }
