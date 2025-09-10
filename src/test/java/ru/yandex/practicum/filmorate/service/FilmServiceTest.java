@@ -116,7 +116,7 @@ class FilmServiceTest {
     }
 
     @Test
-    void CRUD() {
+    void crud() {
         FilmApiDto film = new FilmApiDto();
         film.setName("Time");
         film.setDescription("time is running out");

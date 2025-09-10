@@ -99,7 +99,7 @@ class UserServiceTest {
     }
 
     @Test
-    void CRUD() {
+    void crud() {
         UserApiDto user = new UserApiDto();
         user.setEmail("vlad@ya.ru");
         user.setLogin("vladislav");
