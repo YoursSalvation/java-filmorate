@@ -44,6 +44,7 @@ public class UserService {
     public UserApiDto createUser(UserApiDto dto) {
         if (dto == null) throw new IllegalArgumentException("User object shouldn't be null");
         User user = UserMapper.toUser(dto);
+        if (user.getName().isBlank()) user.setName(user.getLogin());
         User newUser = userStorage.createUser(user);
         return UserMapper.toDto(newUser);
     }
