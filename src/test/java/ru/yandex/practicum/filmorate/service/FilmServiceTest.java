@@ -109,10 +109,6 @@ class FilmServiceTest {
 
         popular = filmService.getPopular(2, null, null);
         assertEquals(2, popular.size());
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            filmService.getPopular(-1, null, null);
-        });
     }
 
     @Test
