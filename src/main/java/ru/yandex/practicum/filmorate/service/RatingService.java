@@ -34,7 +34,7 @@ public class RatingService {
 
     public void checkFilmRating(Film film) {
         if (film == null) throw new IllegalArgumentException("Invalid Null Film");
-        Rating rating = film.getRating();
+        Rating rating = film.getMpa();
         if (rating == null) return;
         ratingDBStorage.getRatingById(rating.getId());
     }

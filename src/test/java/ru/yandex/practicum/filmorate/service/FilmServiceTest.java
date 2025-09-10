@@ -120,7 +120,7 @@ class FilmServiceTest {
         film.setReleaseDate(LocalDate.of(2011, 10, 27));
         Rating rating = new Rating();
         rating.setId(1L);
-        film.setRating(rating);
+        film.setMpa(rating);
         Genre genre1 = new Genre();
         genre1.setId(1L);
         Genre genre2 = new Genre();
@@ -138,7 +138,7 @@ class FilmServiceTest {
         assertEquals(film.getDescription(), createdFilm.getDescription());
         assertEquals(film.getDuration(), createdFilm.getDuration());
         assertEquals(film.getReleaseDate(), createdFilm.getReleaseDate());
-        assertEquals(film.getRating().getId(), createdFilm.getRating().getId());
+        assertEquals(film.getMpa().getId(), createdFilm.getMpa().getId());
         assertEquals(film.getGenres().stream().map(Genre::getId).collect(Collectors.toSet()),
                 createdFilm.getGenres().stream().map(Genre::getId).collect(Collectors.toSet()));
 
@@ -150,7 +150,7 @@ class FilmServiceTest {
         nextFilm.setReleaseDate(LocalDate.of(2002, 5, 3));
         Rating rating2 = new Rating();
         rating2.setId(2L);
-        nextFilm.setRating(rating2);
+        nextFilm.setMpa(rating2);
         Genre genre3 = new Genre();
         genre3.setId(3L);
         Genre genre4 = new Genre();
@@ -167,7 +167,7 @@ class FilmServiceTest {
         assertEquals(nextFilm.getDescription(), updatedFilm.getDescription());
         assertEquals(nextFilm.getDuration(), updatedFilm.getDuration());
         assertEquals(nextFilm.getReleaseDate(), updatedFilm.getReleaseDate());
-        assertEquals(nextFilm.getRating().getId(), updatedFilm.getRating().getId());
+        assertEquals(nextFilm.getMpa().getId(), updatedFilm.getMpa().getId());
         assertEquals(nextFilm.getGenres().stream().map(Genre::getId).collect(Collectors.toSet()),
                 updatedFilm.getGenres().stream().map(Genre::getId).collect(Collectors.toSet()));
 
