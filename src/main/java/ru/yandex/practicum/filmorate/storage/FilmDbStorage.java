@@ -18,9 +18,11 @@ import ru.yandex.practicum.filmorate.storage.mappers.FilmRowMapper;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Repository
@@ -90,10 +92,23 @@ public class FilmDbStorage implements FilmStorage {
         }
         film.setId(keyHolder.getKey().longValue());
         try {
-            for (Genre genre : film.getGenres()) {
-                if (genre.getId() != null) {
-                    jdbc.update(FilmRowMapper.ADD_FILM_GENRE_QUERY, film.getId(), genre.getId());
+            List<Genre> genres = film.getGenres().stream()
+                    .filter(g -> g.getId() != null)
+                    .toList();
+
+            if (!genres.isEmpty()) {
+                String sql = "INSERT INTO film_genres (film_id, genre_id) VALUES " +
+                        genres.stream()
+                                .map(g -> "(?, ?)")
+                                .collect(Collectors.joining(", "));
+
+                List<Object> genreIds = new ArrayList<>();
+                for (Genre g : genres) {
+                    genreIds.add(film.getId());
+                    genreIds.add(g.getId());
                 }
+
+                jdbc.update(sql, genreIds.toArray());
             }
         } catch (DataIntegrityViolationException e) {
             throw new NotFoundException("Genre Referential integrity error");
@@ -117,10 +132,23 @@ public class FilmDbStorage implements FilmStorage {
         }
         try {
             jdbc.update(FilmRowMapper.REMOVE_FILM_GENRES_QUERY, film.getId());
-            for (Genre genre : film.getGenres()) {
-                if (genre.getId() != null) {
-                    jdbc.update(FilmRowMapper.ADD_FILM_GENRE_QUERY, film.getId(), genre.getId());
+            List<Genre> genres = film.getGenres().stream()
+                    .filter(g -> g.getId() != null)
+                    .toList();
+
+            if (!genres.isEmpty()) {
+                String sql = "INSERT INTO film_genres (film_id, genre_id) VALUES " +
+                        genres.stream()
+                                .map(g -> "(?, ?)")
+                                .collect(Collectors.joining(", "));
+
+                List<Object> genreIds = new ArrayList<>();
+                for (Genre g : genres) {
+                    genreIds.add(film.getId());
+                    genreIds.add(g.getId());
                 }
+
+                jdbc.update(sql, genreIds.toArray());
             }
         } catch (DataIntegrityViolationException e) {
             throw new NotFoundException("Film referential integrity error");
