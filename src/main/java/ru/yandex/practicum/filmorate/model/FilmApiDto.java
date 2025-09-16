@@ -1,7 +1,10 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.serializer.DurationDeserializer;
 import ru.yandex.practicum.filmorate.model.serializer.DurationSerializer;
 
 import java.time.Duration;
@@ -10,16 +13,16 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-/**
- * Film.
- */
 @Data
-public class Film {
+public class FilmApiDto {
+
     private Long id;
+    @NotBlank(message = "@Valid: Film name shouldn't be blank")
     private String name;
     private String description;
     private LocalDate releaseDate;
     @JsonSerialize(using = DurationSerializer.class)
+    @JsonDeserialize(using = DurationDeserializer.class)
     private Duration duration;
     private Set<Long> likes = new HashSet<>();
     private Rating mpa;

@@ -2,12 +2,14 @@ package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
@@ -37,13 +39,6 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film createFilm(Film film) {
-        if (film.getName() == null || film.getName().isBlank())
-            throw new ValidationException("Название не может быть пустым");
-        if (film.getDescription().length() > 200) throw new ValidationException("Макисмальная длина описания" +
-                " 200 символов");
-        if (film.getReleaseDate().isBefore(MINIMAL_DATE)) throw new ValidationException("Дата релиза - не раньше" +
-                " 28 декабря 1895 года");
-        if (film.getDuration().isNegative()) throw new ValidationException("Длительность не может быть отрицательной");
         film.setId(getNextId());
         films.put(film.getId(), film);
         return film;
@@ -51,7 +46,6 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film updateFilm(Film film) {
-        if (film.getId() == null) throw new ValidationException("Id должен быть указан");
         if (!films.containsKey(film.getId())) throw new NotFoundException("Фильм с указанным id не найден");
         Film actualFilm = films.get(film.getId());
         if (film.getName() == null) film.setName(actualFilm.getName());
@@ -78,12 +72,18 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public List<Film> getPopular(Integer count) {
+    public List<Film> getPopular(Integer count, Long genreId, String year) {
         return getFilms().stream()
                 .sorted((film1, film2) -> film2.getLikes().size() - film1.getLikes().size())
                 .limit(count)
                 .toList();
     }
+
+    @Override
+    public void checkFilmById(Long id) {
+        if (!films.containsKey(id)) throw new NotFoundException("Film not found");
+    }
+
 
     private Long getNextId() {
         long curMaxId = films.keySet().stream()
